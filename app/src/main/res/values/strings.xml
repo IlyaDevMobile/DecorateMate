@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">DecorateMate</string>
+    <string name="description">description</string>
+    <string name="download">Download</string>
+    <string name="apply">Apply</string>
+    <string name="favourites">Favourites</string>
+    <string name="space">Space</string>
+    <string name="nature">Nature</string>
+    <string name="night">Night</string>
+    <string name="morning">Morning</string>
+    <string name="sunset">Sunset</string>
+    <string name="winter">Winter</string>
+    <string name="city">City</string>
+    <string name="forest">Forest</string>
+    <string name="rain">Rain</string>
+    <string name="sky">Sky</string>
+    <string name="settings">Settings</string>
 </resources>

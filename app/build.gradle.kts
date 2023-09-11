@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 
 }
 
@@ -54,8 +55,9 @@ dependencies {
     ksp("com.github.bumptech.glide:ksp:4.14.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     //coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
     //room
     implementation("androidx.room:room-runtime:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
