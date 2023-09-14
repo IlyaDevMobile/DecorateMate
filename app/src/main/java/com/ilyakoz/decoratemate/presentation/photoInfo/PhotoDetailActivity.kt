@@ -12,25 +12,25 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.ilyakoz.decoratemate.data.network.model.Photo
 import com.ilyakoz.decoratemate.databinding.ActivityPhotoDetailBinding
+import com.ilyakoz.decoratemate.domain.model.PhotoInfo
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-
+@AndroidEntryPoint
 class PhotoDetailActivity : AppCompatActivity() {
-
-
-    private lateinit var viewModel: PhotoDetailViewModel
 
 
     private val binding by lazy {
         ActivityPhotoDetailBinding.inflate(layoutInflater)
     }
+
+    private val viewModel: PhotoDetailViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,42 +42,28 @@ class PhotoDetailActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[PhotoDetailViewModel::class.java]
-        val photo = intent.getParcelableExtra<Photo?>(EXTRA_PHOTO)
-        if (photo != null) {
+
+
+        val photoInfo = intent.getParcelableExtra<PhotoInfo?>(EXTRA_PHOTO)
+
+
+
+        if (photoInfo != null) {
             Glide.with(this)
-                .load(photo.urls?.regular)
+                .load(photoInfo.urls?.regular)
                 .into(binding.clickPhoto)
-            binding.description.text = photo.alt_description.toString()
+            binding.description.text = photoInfo.alt_description.toString()
         } else {
-            Log.e("PhotoDetailActivity", "Photo is null")
+            Log.e("PhotoDetailActivity", "PhotoInfoDto is null")
             //
         }
 
-        viewModel.getFavoritePhoto(photo!!.id).observe(this) { photoFromDb ->
-            if (photoFromDb == null) {
-                binding.buttonFavorite.setOnClickListener {
-                    viewModel.viewModelScope.launch {
-                        viewModel.insertPhoto(photo)
-                        showToast("Photo added to favorites")
-                    }
-                }
-            } else {
-                binding.buttonFavorite.setOnClickListener {
-                    viewModel.viewModelScope.launch {
-                        viewModel.removePhoto(photo.id)
-                        showToast("Photo removed from favorites")
-
-                    }
-                }
-            }
-        }
         binding.buttonLoad.setOnClickListener {
             val drawable = binding.clickPhoto.drawable
             if (drawable is BitmapDrawable) {
                 val bitmap = drawable.bitmap
-                val photo = intent.getParcelableExtra<Photo?>(EXTRA_PHOTO)
-                photo?.alt_description?.let { description ->
+                val photoInfoDto = intent.getParcelableExtra<PhotoInfo>(EXTRA_PHOTO)
+                photoInfoDto?.alt_description?.let { description ->
                     saveImageToGallery(bitmap, description)
                 }
             }
@@ -88,9 +74,26 @@ class PhotoDetailActivity : AppCompatActivity() {
                 val bitmap = drawable.bitmap
                 setWallpapers(bitmap)
             }
-
-
         }
+
+
+        binding.buttonFavorite.setOnClickListener {
+            val photoInfo = photoInfo
+            if (photoInfo != null) {
+                viewModel.viewModelScope.launch {
+                    val isFavorite = viewModel.getFavoritePhotoInfoSafe(photoInfo.id)
+                    if (isFavorite == null) {
+                        viewModel.addFavoritePhoto(photoInfo)
+                        Log.d("PhotoDetailActivity", "Добавил ${photoInfo.id}")
+                    } else {
+                        viewModel.deleteFavouritePhoto(photoInfo.id)
+                        Log.d("PhotoDetailActivity", "Удалено ${photoInfo.id}")
+                    }
+                }
+            }
+        }
+
+
     }
 
 
@@ -102,7 +105,8 @@ class PhotoDetailActivity : AppCompatActivity() {
         val wallpaperManager = WallpaperManager.getInstance(applicationContext)
         try {
             wallpaperManager.setBitmap(bitmap)
-            Toast.makeText(this, "Wallpaper Changed Successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Wallpaper Changed Successfully", Toast.LENGTH_SHORT)
+                .show()
         } catch (e: IOException) {
             Toast.makeText(this, "An Error Occurred", Toast.LENGTH_SHORT).show()
         }
@@ -138,11 +142,11 @@ class PhotoDetailActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val EXTRA_PHOTO = "Photo"
+        private const val EXTRA_PHOTO = "PhotoInfo"
 
-        fun newIntent(context: Context, photo: Photo): Intent {
+        fun newIntent(context: Context, photoInfo: PhotoInfo): Intent {
             val intent = Intent(context, PhotoDetailActivity::class.java)
-            intent.putExtra(EXTRA_PHOTO, photo)
+            intent.putExtra(EXTRA_PHOTO, photoInfo)
             return intent
         }
 

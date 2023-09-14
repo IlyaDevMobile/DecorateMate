@@ -1,57 +1,55 @@
 package com.ilyakoz.decoratemate.presentation.listPhoto
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ilyakoz.decoratemate.data.network.api.ApiFactory
-import com.ilyakoz.decoratemate.data.network.model.Photo
-import com.ilyakoz.decoratemate.data.network.model.PhotoResponse
-
-class ListPhotoViewModel : ViewModel() {
-
-
-    private val _photos = MutableLiveData<PhotoResponse?>()
-    val photo: MutableLiveData<PhotoResponse?>
-        get() = _photos
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
+import androidx.lifecycle.viewModelScope
+import com.ilyakoz.decoratemate.domain.LoadPhotoUseCase
+import com.ilyakoz.decoratemate.domain.model.PhotoInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-    fun clearPhotos() {
-        _photos.value = null
-    }
+@HiltViewModel
+class ListPhotoViewModel @Inject constructor(
+    private val loadPhotoUseCase: LoadPhotoUseCase
+) : ViewModel() {
 
 
-    private var page: Int = 1
+    private val _photos = MutableStateFlow<List<PhotoInfo>?>(null)
+    val photoFlow: StateFlow<List<PhotoInfo>?> = _photos
 
-    suspend fun loadPhoto(query: String) {
-        val load : Boolean = _loading.value ?: false
-        if (load) {
+    private val _loading = MutableStateFlow(false)
+    val loadingFlow: StateFlow<Boolean> = _loading
+
+    private var page: Int = 1 // колечество страниц который вернет запрос
+
+
+
+    fun loadPhoto(query: String) {
+        if (_loading.value) {
             return
         }
-        try {
-            _loading.postValue(true)
-            val result = ApiFactory.apiService?.loadSpacePhoto(page = page, query = query)
-            Log.d("ListPhotoViewModel", page.toString())
 
-            val currentPhotoResponse = _photos.value?.photo ?: mutableListOf()
-            val updatePhoto = mutableListOf<Photo>()
-
-            updatePhoto.addAll(currentPhotoResponse)
-            result?.photo?.let { updatePhoto.addAll(it) }
-
-            val updatedResponse = PhotoResponse(updatePhoto)
-            _photos.postValue(updatedResponse)
-            page++
-
-        } catch (e: Exception) {
-            Log.e("ListPhotoViewModel", "Ошибка при загрузке фотографии: ${e.message}")
-        } finally {
-            _loading.postValue(false)
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                val result = loadPhotoUseCase.loadPhoto(page, query)
+                val currentPhotos = _photos.value.orEmpty().toMutableList()
+                currentPhotos.addAll(result.photoInfo.orEmpty())
+                _photos.value = currentPhotos
+                page++
+            } catch (e: Exception) {
+            } finally {
+                _loading.value = false
+            }
         }
     }
 
+
+
 }
+
+
+

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Urls(
+data class UrlsDto(
     @SerializedName("regular")
     @Expose
     val regular: String,

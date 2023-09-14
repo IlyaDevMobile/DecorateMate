@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    id("com.google.dagger.hilt.android")
+
 
 }
 
@@ -72,6 +74,14 @@ dependencies {
     //Retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+    implementation ("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-compiler:2.48")
+
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
+
 
 
 

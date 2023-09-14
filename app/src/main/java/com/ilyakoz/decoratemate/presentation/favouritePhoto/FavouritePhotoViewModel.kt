@@ -1,18 +1,19 @@
 package com.ilyakoz.decoratemate.presentation.favouritePhoto
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import com.ilyakoz.decoratemate.data.database.AppDatabase
-import com.ilyakoz.decoratemate.data.network.model.Photo
-
-class FavouritePhotoViewModel(application: Application) : AndroidViewModel(application) {
-
-    fun getFavoritePhoto(): LiveData<List<Photo>> {
-        return db.getPhotoList()
-    }
+import androidx.lifecycle.ViewModel
+import com.ilyakoz.decoratemate.domain.GetFavoritePhotoInfoListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
-    private val db = AppDatabase.getInstance(application).photoDao()
+@HiltViewModel
+class FavouritePhotoViewModel @Inject constructor(
+    private val getFavoritePhotoInfoListUseCase: GetFavoritePhotoInfoListUseCase
+) : ViewModel() {
+
+
+    val photoList = getFavoritePhotoInfoListUseCase.invoke()
+
+
 
 }
