@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ilyakoz.decoratemate.databinding.ItemPhotoBinding
-import com.ilyakoz.decoratemate.data.network.model.Photo
+import com.ilyakoz.decoratemate.domain.model.PhotoInfo
 
 class PhotoAdapter :
-    ListAdapter<Photo, PhotoInfoViewHolder>(PhotoDiffCallBack) {
+    ListAdapter<PhotoInfo, PhotoInfoViewHolder>(PhotoDiffCallBack) {
 
 
-    var onPhotoItemClickListener: ((Photo) -> Unit)? = null
+    var onPhotoItemClickListener: ((PhotoInfo) -> Unit)? = null
     var onReachEndListener: OnReachEndListener? = null
 
 

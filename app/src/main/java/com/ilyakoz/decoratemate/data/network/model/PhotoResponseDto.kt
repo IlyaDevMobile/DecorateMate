@@ -7,10 +7,10 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class PhotoResponse(
+data class PhotoResponseDto(
     @SerializedName("results")
     @Expose
-    val photo: List<Photo>? = null
+    val photoInfoDto: List<PhotoInfoDto>? = null
 ) : Parcelable
 
 

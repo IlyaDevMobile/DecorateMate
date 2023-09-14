@@ -1,24 +1,49 @@
 package com.ilyakoz.decoratemate.presentation.photoInfo
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import com.ilyakoz.decoratemate.data.database.AppDatabase
-import com.ilyakoz.decoratemate.data.network.model.Photo
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ilyakoz.decoratemate.domain.AddFavoritePhotoUseCase
+import com.ilyakoz.decoratemate.domain.DeleteFavoritePhotoUseCase
+import com.ilyakoz.decoratemate.domain.GetFavoritePhotoInfoUseCase
+import com.ilyakoz.decoratemate.domain.model.PhotoInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PhotoDetailViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = AppDatabase.getInstance(application).photoDao()
 
-    fun getFavoritePhoto(photoId: String): LiveData<Photo> {
-        return db.getPhoto(photoId)
+@HiltViewModel
+class PhotoDetailViewModel @Inject constructor(
+
+    private val addFavoritePhotoUseCase: AddFavoritePhotoUseCase,
+    private val deleteFavoritePhotoUseCase: DeleteFavoritePhotoUseCase,
+
+    private val getFavoritePhotoInfoUseCase: GetFavoritePhotoInfoUseCase,
+
+    ) : ViewModel() {
+
+
+    suspend fun addFavoritePhoto(photoInfo: PhotoInfo) {
+        viewModelScope.launch {
+            addFavoritePhotoUseCase.addFavoritePhoto(photoInfo)
+        }
     }
 
-    suspend fun insertPhoto(photo: Photo){
-        val result = db.addPhoto(photo)
+
+    suspend fun deleteFavouritePhoto(photoId: String) {
+        viewModelScope.launch {
+            deleteFavoritePhotoUseCase.deleteFavoritePhoto(photoId)
+        }
     }
 
-    suspend fun removePhoto(photoId: String){
-        val result = db.deletePhoto(photoId)
+    suspend fun getFavoritePhotoInfo(photoId: String): PhotoInfo? {
+        return getFavoritePhotoInfoUseCase.getPhotoInfo(photoId)
     }
+
+    suspend fun getFavoritePhotoInfoSafe(photoId: String): PhotoInfo? {
+        return viewModelScope.runCatching {
+            getFavoritePhotoInfo(photoId)
+        }.getOrNull()
+    }
+
 
 }
