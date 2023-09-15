@@ -44,7 +44,7 @@ https://github.com/IlyaDevMobile/DecorateMate/assets/93551125/647f5c9a-405d-4ecc
 - **Инструменты разработки**: Android Studio
 - **minSdk 24, targetSdk 33**
 
-## Источник изображений
+### Источник изображений
 -  **Unsplash API**
 
 ### Библиотеки 
