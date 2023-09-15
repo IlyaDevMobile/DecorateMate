@@ -9,65 +9,58 @@ import com.ilyakoz.decoratemate.presentation.listPhoto.ListPhotoActivity
 class CategoryActivity : AppCompatActivity() {
 
 
+
     private val binding by lazy {
         ActivityCategoryBinding.inflate(layoutInflater)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        supportActionBar?.hide() // Скрываем Action Bar
+
+
+
+
 
 
         binding.buttonSpace.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.space))
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.space))
         }
         binding.buttonNature.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.nature))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.nature))
         }
         binding.buttonNight.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.night))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.night))
         }
         binding.buttonMorning.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.morning))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.morning))
         }
         binding.buttonSunset.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.sunset))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.sunset))
         }
         binding.buttonWinter.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.winter))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.winter))
         }
         binding.buttonCity.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.city))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.city))
         }
         binding.buttonForest.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.forest))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.forest))
         }
         binding.buttonRain.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.rain))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.rain))
         }
         binding.buttonSky.setOnClickListener {
-            val intent = ListPhotoActivity.newIntent(this, getString(R.string.sky))
-
-            startActivity(intent)
+            startListPhotoActivity(getString(R.string.sky))
         }
 
+    }
+
+    private fun startListPhotoActivity(category: String) {
+        val intent = ListPhotoActivity.newIntent(this, category)
+        startActivity(intent)
     }
 
 }

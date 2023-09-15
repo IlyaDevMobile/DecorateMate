@@ -13,18 +13,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoDetailViewModel @Inject constructor(
-
     private val addFavoritePhotoUseCase: AddFavoritePhotoUseCase,
     private val deleteFavoritePhotoUseCase: DeleteFavoritePhotoUseCase,
-
     private val getFavoritePhotoInfoUseCase: GetFavoritePhotoInfoUseCase,
-
     ) : ViewModel() {
 
 
-    suspend fun addFavoritePhoto(photoInfo: PhotoInfo) {
+
+    suspend fun addFavoritePhoto(photoInfo: PhotoInfo?) {
         viewModelScope.launch {
-            addFavoritePhotoUseCase.addFavoritePhoto(photoInfo)
+            photoInfo?.let { addFavoritePhotoUseCase.addFavoritePhoto(it) }
         }
     }
 
@@ -35,7 +33,7 @@ class PhotoDetailViewModel @Inject constructor(
         }
     }
 
-    suspend fun getFavoritePhotoInfo(photoId: String): PhotoInfo? {
+    private suspend fun getFavoritePhotoInfo(photoId: String): PhotoInfo? {
         return getFavoritePhotoInfoUseCase.getPhotoInfo(photoId)
     }
 
@@ -44,6 +42,22 @@ class PhotoDetailViewModel @Inject constructor(
             getFavoritePhotoInfo(photoId)
         }.getOrNull()
     }
+
+    fun addOrRemoveFromFavorites(photoInfo: PhotoInfo?) {
+        viewModelScope.launch {
+            val isFavorite = getFavoritePhotoInfoSafe(photoInfo?.id ?: "")
+            if (isFavorite == null) {
+                addFavoritePhoto(photoInfo)
+            } else {
+                deleteFavouritePhoto(photoInfo?.id ?: "")
+            }
+        }
+    }
+
+
+
+
+
 
 
 }

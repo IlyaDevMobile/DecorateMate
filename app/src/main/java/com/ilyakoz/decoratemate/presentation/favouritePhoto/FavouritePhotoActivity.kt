@@ -29,6 +29,7 @@ class FavouritePhotoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        supportActionBar?.hide() // Скрываем Action Bar
         adapter = PhotoAdapter()
         binding.recyclerViewPhoto.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerViewPhoto.adapter = adapter

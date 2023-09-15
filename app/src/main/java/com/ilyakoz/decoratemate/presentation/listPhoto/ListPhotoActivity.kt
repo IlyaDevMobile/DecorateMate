@@ -1,6 +1,5 @@
 package com.ilyakoz.decoratemate.presentation.listPhoto
 
-//import com.ilyakoz.decoratemate.presentation.favouritePhoto.FavouritePhotoActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +17,7 @@ import com.ilyakoz.decoratemate.domain.model.PhotoInfo
 import com.ilyakoz.decoratemate.presentation.adapter.PhotoAdapter
 import com.ilyakoz.decoratemate.presentation.favouritePhoto.FavouritePhotoActivity
 import com.ilyakoz.decoratemate.presentation.photoInfo.PhotoDetailActivity
+import com.ilyakoz.decoratemate.presentation.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,10 @@ class ListPhotoActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -88,6 +91,8 @@ class ListPhotoActivity : AppCompatActivity() {
             }
 
             R.id.settings -> {
+                val intent = SettingsActivity.newIntent(this)
+                startActivity(intent)
                 true
             }
 
