@@ -9,11 +9,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.ilyakoz.decoratemate.R
@@ -22,6 +24,7 @@ import com.ilyakoz.decoratemate.domain.model.PhotoInfo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.IOException
+import kotlin.math.log
 
 @AndroidEntryPoint
 class PhotoDetailActivity : AppCompatActivity() {
@@ -35,6 +38,13 @@ class PhotoDetailActivity : AppCompatActivity() {
 
     private var photoInfo: PhotoInfo? = null
 
+    private val favoriteOff by lazy {
+        ContextCompat.getDrawable(this, R.drawable.baseline_favorite_border_24)
+    }
+    private val favoriteOn by lazy {
+        ContextCompat.getDrawable(this, R.drawable.baseline_favorite_24)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -47,8 +57,20 @@ class PhotoDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide() // Скрываем Action Bar
         photoInfo = intent.getParcelableExtra<PhotoInfo?>(EXTRA_PHOTO)
+        checkingFavorites(photoInfo)
         setupUi()
 
+    }
+
+    private fun checkingFavorites(photoInfo: PhotoInfo?) {
+        viewModel.viewModelScope.launch {
+            val isFavorite = viewModel.getFavoritePhotoInfoSafe(photoInfo?.id.toString())
+            if (isFavorite == null) {
+                binding.buttonFavorite.setImageDrawable(favoriteOff)
+            } else {
+                binding.buttonFavorite.setImageDrawable(favoriteOn)
+            }
+        }
     }
 
     private fun setupUi() {
@@ -81,13 +103,16 @@ class PhotoDetailActivity : AppCompatActivity() {
             .show()
     }
 
+
     private fun saveImageInFavorite(photoInfo: PhotoInfo?) {
         viewModel.viewModelScope.launch {
             val isFavorite = viewModel.getFavoritePhotoInfoSafe(photoInfo?.id ?: "")
             if (isFavorite == null) {
+                binding.buttonFavorite.setImageDrawable(favoriteOn)
                 viewModel.addFavoritePhoto(photoInfo)
                 showToast(getString(R.string.photo_add_in_favorite))
             } else {
+                binding.buttonFavorite.setImageDrawable(favoriteOff)
                 viewModel.deleteFavouritePhoto(photoInfo?.id ?: "")
                 showToast(getString(R.string.photo_remove_from_favorite))
             }
