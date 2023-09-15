@@ -1,5 +1,6 @@
 # DecorateMate
 Приложение - утилита для установки изображения в качестве обоев рабочего стола смартфона
+
 # Реализовано:
 Первый Экран:
 - Список категорий
@@ -42,6 +43,7 @@ https://github.com/IlyaDevMobile/DecorateMate/assets/93551125/647f5c9a-405d-4ecc
 - **Язык программирования**:  Kotlin + XML
 - **Инструменты разработки**: Android Studio
 - **minSdk 24, targetSdk 33**
+- **Unsplash API**
 
 ### Библиотеки 
 
