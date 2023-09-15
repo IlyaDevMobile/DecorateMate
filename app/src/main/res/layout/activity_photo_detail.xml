@@ -68,16 +68,15 @@
 
                 />
 
-            <Button
+            <ImageView
                 android:id="@+id/buttonFavorite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="@string/favourites"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                tools:src = "@drawable/baseline_favorite_border_24"
                 />
         </LinearLayout>
 

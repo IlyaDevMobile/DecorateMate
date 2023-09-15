@@ -30,5 +30,6 @@
     <string name="photo_add_in_favorite">Photo add in favorite</string>
     <string name="photo_remove_from_favorite">Photo remove from favorite</string>
     <string name="select_an_action">Select an action</string>
+    <string name="clear_cache">Clear cache</string>
 
 </resources>

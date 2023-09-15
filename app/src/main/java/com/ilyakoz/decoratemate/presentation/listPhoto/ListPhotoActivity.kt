@@ -8,8 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ilyakoz.decoratemate.R
 import com.ilyakoz.decoratemate.databinding.ActivityMainBinding
@@ -19,8 +17,6 @@ import com.ilyakoz.decoratemate.presentation.favouritePhoto.FavouritePhotoActivi
 import com.ilyakoz.decoratemate.presentation.photoInfo.PhotoDetailActivity
 import com.ilyakoz.decoratemate.presentation.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class ListPhotoActivity : AppCompatActivity() {
@@ -32,10 +28,7 @@ class ListPhotoActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -45,13 +38,12 @@ class ListPhotoActivity : AppCompatActivity() {
 
         val query = intent.getStringExtra(EXTRA_CATEGORY)
 
-        lifecycleScope.launch {
-            viewModel.photoFlow.collect { photoList ->
-                if (photoList != null) {
-                    adapter.submitList(photoList)
-                }
+        viewModel.photoLiveData.observe(this) { photoList ->
+            photoList?.let {
+                adapter.submitList(photoList)
             }
         }
+
         adapter.onPhotoItemClickListener = {
             val intent = PhotoDetailActivity.newIntent(
                 this,
@@ -60,13 +52,9 @@ class ListPhotoActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        viewModel.viewModelScope.launch {
-            viewModel.loadingFlow.collect { isLoading ->
-                binding.progressBarLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
+        viewModel.loadingLiveData.observe(this) { isLoading ->
+            binding.progressBarLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-
 
         viewModel.loadPhoto(query.toString())
 
@@ -100,6 +88,7 @@ class ListPhotoActivity : AppCompatActivity() {
         }
     }
 
+
     companion object {
         private const val EXTRA_CATEGORY = "category"
 
@@ -110,4 +99,5 @@ class ListPhotoActivity : AppCompatActivity() {
         }
     }
 }
+
 

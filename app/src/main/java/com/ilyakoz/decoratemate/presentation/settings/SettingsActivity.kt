@@ -8,41 +8,45 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 import com.ilyakoz.decoratemate.R
+import com.ilyakoz.decoratemate.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var themedSwitch: SwitchCompat
+
+
+    private val binding by lazy {
+        ActivitySettingsBinding.inflate(layoutInflater)
+    }
+
+
     private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-        themedSwitch = findViewById(R.id.themedSwitch)
 
         val selectedTheme = sharedPrefs.getString(getString(R.string.key_theme), "")
 
         if (selectedTheme.isNullOrEmpty()) {
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (currentNightMode) {
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                 Configuration.UI_MODE_NIGHT_NO -> {
                     // Светлая тема
-                    themedSwitch.isChecked = false
+                    binding.themedSwitch.isChecked = false
                 }
                 Configuration.UI_MODE_NIGHT_YES -> {
                     // Темная тема
-                    themedSwitch.isChecked = true
+                    binding.themedSwitch.isChecked = true
                 }
             }
         } else {
-            themedSwitch.isChecked = selectedTheme == "dark"
+            binding.themedSwitch.isChecked = selectedTheme == "dark"
         }
 
-        themedSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.themedSwitch.setOnCheckedChangeListener { _, isChecked ->
             val newTheme = if (isChecked) "dark" else "light"
             sharedPrefs.edit().putString(getString(R.string.key_theme), newTheme).apply()
 
@@ -67,4 +71,3 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 }
-
