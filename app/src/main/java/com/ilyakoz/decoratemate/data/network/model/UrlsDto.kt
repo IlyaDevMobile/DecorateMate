@@ -9,6 +9,6 @@ import kotlinx.parcelize.Parcelize
 data class UrlsDto(
     @SerializedName("regular")
     @Expose
-    val regular: String,
+    val regular: String
 
     ) : Parcelable

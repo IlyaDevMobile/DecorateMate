@@ -5,7 +5,6 @@
     android:id="@+id/buttonLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".presentation.category.CategoryActivity">
@@ -13,112 +12,111 @@
 
     <Button
         android:id="@+id/buttonSpace"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/space"
         android:textAllCaps="false"
-        android:textColor="@color/black"
         />
 
 
     <Button
         android:id="@+id/buttonNature"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/nature"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonNight"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/night"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonMorning"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/morning"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonSunset"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/sunset"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonWinter"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/winter"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonCity"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/city"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonForest"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/forest"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonRain"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/rain"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 
     <Button
         android:id="@+id/buttonSky"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/MybuttonStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/sky"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        />
 
 </LinearLayout>

@@ -15,4 +15,20 @@
     <string name="rain">Rain</string>
     <string name="sky">Sky</string>
     <string name="settings">Settings</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="system_default_theme">System Default Theme</string>
+    <string name="themed_switch">Themed switch</string>
+
+
+
+    <string name="key_theme">theme_preference</string>
+    <string name="failed_to_save_image">Failed to save image</string>
+    <string name="image_saved_to_gallery">Image saved to gallery</string>
+    <string name="an_error_occurred_while_installing_the_wallpaper">An error occurred while installing the wallpaper</string>
+    <string name="photo_add_in_favorite">Photo add in favorite</string>
+    <string name="photo_remove_from_favorite">Photo remove from favorite</string>
+    <string name="select_an_action">Select an action</string>
+
 </resources>

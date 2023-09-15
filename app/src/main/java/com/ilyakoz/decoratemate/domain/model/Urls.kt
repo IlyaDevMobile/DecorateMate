@@ -9,4 +9,5 @@ data class Urls(
 
     val regular: String
 
+
 ) : Parcelable
